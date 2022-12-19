@@ -11,6 +11,7 @@ void taoKhung()
 {
        //REAR
     char s1[] = "Rear";
+    char s2[] = "...";
 
     setcolor(3);
     rectangle(320, 200, 380, 250);
@@ -34,7 +35,9 @@ void taoKhung()
     {
         rectangle(300 + i * 100, 300, 400 + i * 100, 400);
     }
-    setcolor(1);
+    setcolor(14);
+    rectangle(800, 300, 900, 400);
+    drawText(830, 320, s2);
 }
 void dem(int n, int& t)
 {
@@ -51,10 +54,20 @@ void dem(int n, int& t)
 
 void show(queue<int> gq, int size)
 {
+    char s1[] = "Front";
     queue<int> g = gq;
     system("cls");
     taoKhung();
-    setcolor(0);
+    setcolor(8);
+
+    //Front
+    rectangle(320 + g.size() * 100, 450, 380 + g.size() * 100, 500);
+    setcolor(9);
+    line(310 + g.size() * 100, 450, 350 + g.size() * 100, 420);
+    line(390 + g.size() * 100, 450, 350 + g.size() * 100, 420);
+    line(310 + g.size() * 100, 450, 390 + g.size() * 100, 450);
+    drawText(330 + g.size() * 100, 460, s1);
+
     for (int j = 0; j < gq.size(); j++)
     {
         char temp[5];
@@ -77,6 +90,7 @@ void kiemTra(queue<int> S)
 {
     cout << "Chon'1' de Insert" << endl;
     cout << "Chon'2' de Delete"<<endl;
+    cout << "Nhan phim bat ki de Thoat."<<endl;
     int key;
     int text;
     cin >> key;
