@@ -1,11 +1,87 @@
 ﻿#include "graphics.h"
-#include <dos.h>
+#include<iostream>
 #include<string>
 #include <stdio.h>
 #include <conio.h>
-#include <queue>
+#include <cstdlib>
 
 using namespace std;
+
+#define Max 5 //so phan tu toi da cua Queue
+typedef int item; //kieu du lieu
+
+struct Queue
+{
+    int Front, Rear; //front: phan tu dau hang, rear: phan tu cuoi hang
+    item Data[Max]; //Mang cac phan tu
+    int count; //dem so phan tu cua Queue
+};
+
+void Init(Queue& Q); //khoi tao Queue rong
+int Isempty(Queue Q); //kiem tra Queue rong
+int Isfull(Queue Q); //kiem tra Queue day
+void Push(Queue& Q, item x); //them phan tu vao cuoi hang doi
+int Pop(Queue& Q); //Loai bo phan tu khoi dau hang doi
+int Qfront(Queue Q); //xem thong tin phan tu dau hang doi 
+void Input(Queue& Q); //Nhap 
+void Output(Queue Q); //Xuat 
+
+void Init(Queue& Q) //khoi tao Queue rong
+{
+    Q.Front = 0; //phan tu dau
+    Q.Rear = -1; // phan tu cuoi o -1 (khong co phan tu trong Q)
+    Q.count = 0; //so phan tu bang 0
+}
+
+int Isempty(Queue Q) //kiem tra Queue rong
+{
+    if (Q.count == 0) //so phan tu = 0 => rong
+        return 1;
+    return 0;
+}
+
+int Isfull(Queue Q) //kiem tra Queue day
+{
+    if (Q.count == Max) //so phan tu = Max => day
+        return 1;
+    return 0;
+}
+
+void Push(Queue& Q, item x) //them phan tu vao cuoi Queue
+{
+    if (Isfull(Q)) printf("Hang doi day !");
+    else
+    {
+        Q.Data[++Q.Rear] = x; //tang Rear len va gan phan tu vao
+        Q.count++; //tang so phan tu len
+    }
+}
+
+int Pop(Queue& Q) //Loai bo phan tu khoi dau hang doi
+{
+    if (Isempty(Q)) printf("Hang doi rong !");
+    else
+    {
+        item x = Q.Data[Q.Front];
+        for (int i = Q.Front; i < Q.Rear; i++) //di chuyen cac phan tu ve dau hang
+            Q.Data[i] = Q.Data[i + 1];
+        Q.Rear--; // giam vi tri phan tu cuoi xuong
+        Q.count--;//giam so phan tu xuong
+        return x; //tra ve phan tu lay ra
+    }
+}
+int size(Queue& Q) //Loai bo phan tu khoi dau hang doi
+{
+    return Q.count;
+}
+
+item peek(Queue Q) //xem thong tin phan tu dau hang
+{
+    if (Isempty(Q)) printf("Hang doi rong !");
+    else return Q.Data[Q.Front];
+}
+
+
 
 void taoKhung()
 {
@@ -52,26 +128,26 @@ void dem(int n, int& t)
 
 // Print the queue
 
-void show(queue<int> gq, int size)
+void show(Queue gq, int s)
 {
     char s1[] = "Front";
-    queue<int> g = gq;
+    Queue g = gq;
     system("cls");
     taoKhung();
     setcolor(8);
 
     //Front
-    rectangle(320 + g.size() * 100, 450, 380 + g.size() * 100, 500);
+    rectangle(320 + size(g) * 100, 450, 380 + size(g) * 100, 500);
     setcolor(9);
-    line(310 + g.size() * 100, 450, 350 + g.size() * 100, 420);
-    line(390 + g.size() * 100, 450, 350 + g.size() * 100, 420);
-    line(310 + g.size() * 100, 450, 390 + g.size() * 100, 450);
-    drawText(330 + g.size() * 100, 460, s1);
+    line(310 + size(g) * 100, 450, 350 + size(g) * 100, 420);
+    line(390 + size(g) * 100, 450, 350 + size(g) * 100, 420);
+    line(310 + size(g) * 100, 450, 390 + size(g) * 100, 450);
+    drawText(330 + size(g) * 100, 460, s1);
 
-    for (int j = 0; j < gq.size(); j++)
+    for (int j = 0; j < size(gq); j++)
     {
         char temp[5];
-        int n = g.front();
+        int n = peek(g);
         int t = 0;
         dem(n, t);
         for (int i = t - 1; i >= 0; i--)
@@ -81,12 +157,12 @@ void show(queue<int> gq, int size)
         }
         temp[t] = '\0';
         drawText(330 + (j) * 100, 330, temp);
-        g.pop();
+        Pop(g);
     }
 
 }
 
-void kiemTra(queue<int> S)
+void kiemTra(Queue S)
 {
     cout << "Chon'1' de Insert" << endl;
     cout << "Chon'2' de Delete"<<endl;
@@ -96,12 +172,12 @@ void kiemTra(queue<int> S)
     cin >> key;
     if (key == 1)
     {
-        if (S.size() < 5)
+        if (size(S) < 5)
         {
             cin >> text;
-            S.push(text);
+            Push(S,text);
 
-            show(S, S.size());
+            show(S, size(S));
             kiemTra(S);
         }
         else
@@ -112,11 +188,11 @@ void kiemTra(queue<int> S)
     }
     else if (key == 2)
     {
-        if (S.size() > 0)
+        if (size(S) > 0)
         {
-            S.pop();
+            Pop(S);
             setcolor(2);
-            show(S, S.size());
+            show(S, size(S));
             kiemTra(S);
         }
         else
@@ -129,7 +205,8 @@ void kiemTra(queue<int> S)
 
 int main()
 {
-    queue<int> S;
+    Queue S;
+    Init(S);
     initgraph();
     //Comment
     char s1[] = "Press any key to view the program.";
