@@ -81,8 +81,6 @@ item peek(Queue Q) //xem thong tin phan tu dau hang
     else return Q.Data[Q.Front];
 }
 
-
-
 void taoKhung()
 {
        //REAR
