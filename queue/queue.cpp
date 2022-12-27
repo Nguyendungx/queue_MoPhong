@@ -70,7 +70,7 @@ int Pop(Queue& Q) //Loai bo phan tu khoi dau hang doi
         return x; //tra ve phan tu lay ra
     }
 }
-int size(Queue& Q) //Loai bo phan tu khoi dau hang doi
+int size(Queue& Q) 
 {
     return Q.count;
 }
